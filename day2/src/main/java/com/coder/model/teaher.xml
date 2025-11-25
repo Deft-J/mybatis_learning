@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teacher">
+    <delete id="deleteByAge" parameterType="int">
+        delete
+        from teacher
+        where age>#{age}
+    </delete>
+    <select id="selectByAddr" resultType="com.coder.model.Teacher"
+            parameterType="com.coder.model.Teacher">
+        select *
+        from teacher
+        where addr = #{addr}
+    </select>
+    <update id="update" parameterType="map">
+        update teacher
+        set job=#{newjob}
+        where age>#{age1} and job=#{oldjob}
+    </update>
+</mapper>
