@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder.mapper.EmployeeMapper">
+    <!-- 查询所有江苏省的员工信息 -->
+    <select id="selectJiangsuEmployees" resultType="Employee">
+        SELECT id, name, addr, age, job, sal
+        FROM teacher
+        WHERE addr LIKE '%江苏省%'
+    </select>
+
+    <!-- 计算吉林省员工的平均工资 -->
+    <select id="selectJilinAvgSal" resultType="java.lang.Double">
+        SELECT AVG(sal) AS avgSal
+        FROM teacher
+        WHERE addr LIKE '%吉林省%'
+    </select>
+
+    <!-- 将年龄大于30岁的销售员提升为销售经理 -->
+    <update id="updateSalesmanToManager">
+        UPDATE teacher
+        SET job = '销售经理'
+        WHERE age > 30
+          AND job = '销售员'
+    </update>
+
+    <!-- 删除年龄超过35岁的员工 -->
+    <delete id="deleteEmployeeOver35">
+        DELETE FROM teacher
+        WHERE age > 35
+    </delete>
+</mapper>
