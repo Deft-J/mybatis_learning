@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder.mapper.UserMapper">
+    <resultMap id="userRolePermMap" type="com.coder.model.User" autoMapping="true">
+        <id column="uid" property="uid"/>
+        <collection property="roles" ofType="com.coder.model.Role" autoMapping="true">
+            <id column="rid" property="rid"/>
+            <collection property="permissions" ofType="com.coder.model.Permission" autoMapping="true">
+                <id column="pid" property="pid"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="login" resultMap="userRolePermMap">
+        SELECT
+            u.uid, u.uname, u.pwd, u.lasttime,
+            r.rid, r.rname,
+            p.pid, p.pname, p.url
+        FROM
+            user u
+                JOIN user_role ur ON u.uid = ur.uid
+                JOIN role r ON ur.rid = r.rid
+                JOIN role_permission rp ON r.rid = rp.rid
+                JOIN permission p ON rp.pid = p.pid
+        WHERE
+            u.uname = #{uname}
+          AND u.pwd = #{pwd}
+    </select>
+
+    <update id="updateLastTime">
+        UPDATE user
+        SET lasttime = NOW()
+        WHERE uid = #{uid}
+    </update>
+</mapper>
