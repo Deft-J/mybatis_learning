@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder.mapper.EmployeeMapper">
+
+    <!--查询给定城市的所有员工 -->
+    <select id="selectEmpByCity" parameterType="String" resultType="employee">
+        SELECT Id, name, addr, age, job, sal
+        FROM teacher
+        <where>
+            <if test="city != null and city != ''">
+                addr LIKE CONCAT('%', #{city}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!--统计给定省份的员工平均工资 -->
+    <select id="countAvgSalByProvince" parameterType="String" resultType="java.math.BigDecimal">
+        SELECT AVG(sal) AS avgSalary
+        FROM teacher
+        <where>
+            <if test="province != null and province != ''">
+                addr LIKE CONCAT('%', #{province}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 删除给定ID数组的员工 -->
+    <delete id="deleteEmpByIds" parameterType="Integer[]">
+        DELETE FROM teacher
+        <where>
+            <foreach
+                    collection="array"
+                    item="id"
+                    open="AND id IN ("
+                    close=")"
+                    separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+        </mapper>
